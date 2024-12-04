@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import AddProduct from './AddProduct'
 import Navbar from './Navbar'
-import Product from './Product'
+import Allitems from './Allitems'
 import Searchbar from './Searchbar'
 function App() {
   const[isloggedin,setlogin]=useState(true)
@@ -25,7 +25,7 @@ function App() {
    <Navbar/>
    <Searchbar/>
    <AddProduct/>
-   <Product ></Product>
+   <Allitems/>
 
    </>
   )
