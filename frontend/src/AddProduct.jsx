@@ -1,23 +1,23 @@
-import React from 'react'
-import './AddProduct.css'
-import { useState } from 'react'
-import axios from 'axios'
-function AddProduct(){
-    const[product,setproduct]=useState({
-        name:"",
-        price:0,
-        aisle:"",
-        section:0,
-        location:"",
-        availability:true,
-        url:""
-    })
-    function change(e){
-        setproduct({...product,[e.target.name]:e.target.value})
-        console.log(product)
-    }
+import React from 'react';
+import './AddProduct.css';
+import { useState } from 'react';
 
-    // new code
+function AddProduct() {
+    const [product, setProduct] = useState({
+        name: '',
+        price: 0,
+        aisle: '',
+        section: 0,
+        location: '',
+        availability: true,
+        url: '',
+    });
+
+    const change = (e) => {
+        setProduct({ ...product, [e.target.name]: e.target.value });
+        console.log(product);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -28,75 +28,56 @@ function AddProduct(){
                 },
                 body: JSON.stringify(product),
             });
-    
+
             if (res.ok) {
                 const data = await res.json();
-                console.log('API Response:', data); // Debug log to see the response structure
                 alert(data.message || 'Product added successfully!');
-                setproduct({ name: '', price: 0, aisle: '', section: '', location: '', availability: true , url:""});
+                setProduct({
+                    name: '',
+                    price: 0,
+                    aisle: '',
+                    section: '',
+                    location: '',
+                    availability: true,
+                    url: '',
+                });
             } else {
                 const errorData = await res.json();
-                console.error('Error Response:', errorData); // Debug log to see error details
                 alert(errorData.message || 'Failed to add product. Please try again.');
             }
         } catch (err) {
-            console.error('Fetch Error:', err.message);
             alert('Failed to add product. Please check your connection.');
         }
     };
-    
-    
-    // end
-    return (
-        <form className="add-product-form">
-            <h2>Add Product</h2>
-            <div className="form-group">
-                <label>
-                    Name:
-                    <input type="text" name="name" value={product.name} onChange={change} required />
-                </label>
-            </div>
-            <div className="form-group">
-                <label>
-                    price:
-                    <input type="text" name="price" value={product.price} onChange={change} required />
-                </label>
-            </div>
-            <div className="form-group">
-                <label>
-                    aisle:
-                    <input type="text" name="aisle" value={product.aisle} onChange={change} required />
-                </label>
-            </div>
-            <div className="form-group">
-                <label>
-                    section:
-                    <input type="text" name="section" value={product.section} onChange={change} required />
-                </label>
-            </div>
-            <div className="form-group">
-                <label>
-                    location:
-                    <input type="text" name="location" value={product.location} onChange={change} required />
-                </label>
-            </div>
-            <div className="form-group">
-                <label>
-                    availability:
-                    <input type="text" name="availability" value={product.availability} onChange={change} required />
-                </label>
-            </div>
-            
-            <div className="form-group">
-                <label>
-                    url:
-                    <input type="text" name="url" value={product.url} onChange={change} required />
-                </label>
-            </div>
 
-            <button type="submit" onClick={handleSubmit}>Add Product</button>
+    return (
+        <form className="add-product-form" onSubmit={handleSubmit}>
+            <h2>Add Product</h2>
+            {[
+                { label: 'Name', name: 'name', type: 'text' },
+                { label: 'Price', name: 'price', type: 'number' },
+                { label: 'Aisle', name: 'aisle', type: 'text' },
+                { label: 'Section', name: 'section', type: 'number' },
+                { label: 'Location', name: 'location', type: 'text' },
+                { label: 'Availability', name: 'availability', type: 'text' },
+                { label: 'Image URL', name: 'url', type: 'text' },
+            ].map((field, index) => (
+                <div className="form-group" key={index}>
+                    <label>{field.label}:</label>
+                    <input
+                        type={field.type}
+                        name={field.name}
+                        value={product[field.name]}
+                        onChange={change}
+                        required
+                    />
+                </div>
+            ))}
+            <button type="submit" className="submit-button">
+                Add Product
+            </button>
         </form>
     );
 }
 
-export default AddProduct
+export default AddProduct;
