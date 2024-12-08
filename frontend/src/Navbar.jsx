@@ -1,16 +1,35 @@
-import React from 'react'
-import './Navbar.css'
-function Navbar(){
-    return(
+import React from 'react';
+import './Navbar.css';
+import { FaSignInAlt, FaTags, FaStar } from 'react-icons/fa';
+
+function Navbar() {
+    return (
         <nav className="navbar">
-            <h1>Retail Store</h1>
-            <ul>
-                <li><a href="#finder">Login</a></li>
-                <li><a href="#deals">Best Deals</a></li>
-                <li><a href="#top-buys">Top Buys</a></li>
+            <div className="navbar-title-container">
+                <h1 className="navbar-title">MURUGAN<span>STORES</span></h1>
+            </div>
+            <ul className="navbar-links">
+                <li>
+                    <a href="#finder" className="navbar-link">
+                        <FaSignInAlt className="navbar-icon" />
+                        <span>Login</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#deals" className="navbar-link">
+                        <FaTags className="navbar-icon" />
+                        <span>Best Deals</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#top-buys" className="navbar-link">
+                        <FaStar className="navbar-icon" />
+                        <span>Top Buys</span>
+                    </a>
+                </li>
             </ul>
         </nav>
     );
 }
 
-export default Navbar
+export default Navbar;
