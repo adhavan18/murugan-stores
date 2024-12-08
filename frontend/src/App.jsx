@@ -1,34 +1,23 @@
-import { useState } from 'react'
-import './App.css'
-import AddProduct from './AddProduct'
-import Navbar from './Navbar'
-import Allitems from './Allitems'
-import Searchbar from './Searchbar'
+import { useState } from 'react';
+import './App.css';
+import AddProduct from './AddProduct';
+import Navbar from './Navbar';
+import Allitems from './Allitems';
+import Searchbar from './Searchbar';
+
 function App() {
-  const[isloggedin,setlogin]=useState(true)
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(true); 
 
   return (
-   <>
-   
-   {/* {
-    isloggedin?(
-      <>
-            <AddProduct/>
-      </>
-    ):(
-      <> 
-      
-      </>
-    )
-   } */}
-   <Navbar/>
-   <Searchbar/>
-   <AddProduct/>
-   <Allitems/>
-
-   </>
-  )
+    <>
+      <Navbar />
+      <div className="main-content">
+        <Searchbar />
+        {isLoggedIn && <AddProduct />} {/* Only show AddProduct if logged in */}
+        <Allitems />
+      </div>
+    </>
+  );
 }
 
-export default App
+export default App;
