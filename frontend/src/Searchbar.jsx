@@ -6,38 +6,31 @@ import { MdClose } from 'react-icons/md';
 
 const Searchbar = () => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [allProducts, setAllProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
-    useEffect(() => {
-        const fetchAllProducts = async () => {
-            try {
-                const response = await fetch('http://13.61.10.176:5000/api/products/search');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                setAllProducts(data);
-            } catch (error) {
-                console.error('Error fetching products:', error);
-            }
-        };
-
-        fetchAllProducts();
-    }, []);
-
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         const query = e.target.value;
         setSearchQuery(query);
 
         if (query.trim() !== '') {
-            const filtered = allProducts.filter((product) =>
-                product.name.toLowerCase().startsWith(query.toLowerCase())
-            );
-            setFilteredProducts(filtered);
+        
+            try {
+                const response = await fetch('http://13.61.10.176:5000/api/products/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',  
+                    },
+                    body: JSON.stringify({"query":searchQuery}),  
+                });
+
+                const data = await response.json();
+                setFilteredProducts(data); 
+            } catch (error) {
+                console.error('Error fetching filtered products:', error);
+            }
         } else {
-            setFilteredProducts([]);
+            setFilteredProducts([]);  
         }
     };
 
@@ -62,7 +55,7 @@ const Searchbar = () => {
                             className="clear-icon"
                             onClick={() => {
                                 setSearchQuery('');
-                                setFilteredProducts([]);
+                                setFilteredProducts([]);  
                             }}
                         />
                     )}
