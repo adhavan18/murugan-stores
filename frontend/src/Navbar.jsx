@@ -6,7 +6,11 @@ function Navbar() {
     return (
         <nav className="navbar">
             <div className="navbar-title-container">
-                <h1 className="navbar-title">MURUGAN<span>STORES</span></h1>
+                <img
+                    src="./images/LOGO.png" 
+                    alt="Logo"
+                    className="navbar-logo"
+                />
             </div>
             <ul className="navbar-links">
                 <li>
