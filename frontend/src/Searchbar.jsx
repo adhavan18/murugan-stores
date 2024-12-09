@@ -13,7 +13,7 @@ const Searchbar = () => {
     useEffect(() => {
         const fetchAllProducts = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/products/all');
+                const response = await fetch('http://13.61.10.176:5000/api/products/search');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
