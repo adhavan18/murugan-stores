@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Product from './Product';
 import './Searchbar.css';
 import { AiOutlineSearch } from 'react-icons/ai';
@@ -14,28 +14,48 @@ const Searchbar = () => {
         setSearchQuery(query);
 
         if (query.trim() !== '') {
-        
             try {
-                const response = await fetch('http://13.61.10.176:5000/api/products/search', {
+                const response = await fetch('http://13.48.44.58:5000/api/products/search', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',  
+                        'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({"query":searchQuery}),  
+                    body: JSON.stringify({ query }),
                 });
 
                 const data = await response.json();
-                setFilteredProducts(data); 
+                console.log('Filtered products data:', data);
+
+                // Ensure data is an array before updating the filtered products state
+                if (Array.isArray(data)) {
+                    setFilteredProducts(data);
+                } else {
+                    console.error('Expected an array, but got:', data);
+                    setFilteredProducts([]); // Reset if data is not an array
+                }
             } catch (error) {
                 console.error('Error fetching filtered products:', error);
             }
         } else {
-            setFilteredProducts([]);  
+            setFilteredProducts([]);  // Reset when search query is empty
+            setSelectedProduct(null);  // Reset the selected product when search query is cleared
         }
     };
 
     const handleProductClick = (product) => {
-        setSelectedProduct(product);
+        setSelectedProduct(product); // Set selected product
+    };
+
+    const toggleDetails = () => {
+        if (selectedProduct) {
+            setSelectedProduct({ ...selectedProduct, expanded: !selectedProduct.expanded });
+        }
+    };
+
+    const handleClearSearch = () => {
+        setSearchQuery('');
+        setFilteredProducts([]);  // Reset filtered products
+        setSelectedProduct(null);  // Reset selected product when search is cleared
     };
 
     return (
@@ -53,34 +73,31 @@ const Searchbar = () => {
                     {searchQuery && (
                         <MdClose
                             className="clear-icon"
-                            onClick={() => {
-                                setSearchQuery('');
-                                setFilteredProducts([]);  
-                            }}
+                            onClick={handleClearSearch}  // Use the new clear search function
                         />
                     )}
                 </div>
-                <ul className="suggestions">
-                    {filteredProducts.map((product) => (
-                        <li
-                            key={product.id}
-                            className="suggestion-item"
-                            onClick={() => handleProductClick(product)}
-                        >
-                            {product.name}
-                        </li>
-                    ))}
-                </ul>
+                {/* Display suggestions if available */}
+                {filteredProducts.length > 0 && (
+                    <ul className="suggestions">
+                        {filteredProducts.map((product) => (
+                            <li
+                                key={product.id}
+                                className="suggestion-item"
+                                onClick={() => handleProductClick(product)}
+                            >
+                                {product.product_name} {/* Display product name */}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+                {/* Show product details when a product is selected */}
                 {selectedProduct && (
                     <div className="product-details">
                         <h3>Selected Product Details:</h3>
                         <Product
-                            items={[selectedProduct]}
-                            currentIndex={0}
-                            expandedItemIndex={0}
-                            onPrev={() => {}}
-                            onNext={() => {}}
-                            toggleDetails={() => {}}
+                            item={selectedProduct}  // Pass the selected product as the item prop
+                            toggleDetails={toggleDetails}  // Pass toggleDetails function
                         />
                     </div>
                 )}
@@ -90,4 +107,8 @@ const Searchbar = () => {
 };
 
 export default Searchbar;
+
+
+
+
 
