@@ -21,7 +21,7 @@ function AddProduct() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('http://localhost:3000/api/products/add', {
+            const res = await fetch('http://13.61.10.176:5000/api/products/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
