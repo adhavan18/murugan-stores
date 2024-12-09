@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Product from './Product';
 import './Searchbar.css';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { MdClose } from 'react-icons/md';
@@ -43,13 +42,8 @@ const Searchbar = () => {
     };
 
     const handleProductClick = (product) => {
-        setSelectedProduct(product); // Set selected product
-    };
-
-    const toggleDetails = () => {
-        if (selectedProduct) {
-            setSelectedProduct({ ...selectedProduct, expanded: !selectedProduct.expanded });
-        }
+        setSelectedProduct(product); // Set selected product and show its details
+        setFilteredProducts([]); // Hide suggestions when a product is clicked
     };
 
     const handleClearSearch = () => {
@@ -73,12 +67,13 @@ const Searchbar = () => {
                     {searchQuery && (
                         <MdClose
                             className="clear-icon"
-                            onClick={handleClearSearch}  // Use the new clear search function
+                            onClick={handleClearSearch}  // Clear search and reset state
                         />
                     )}
                 </div>
+
                 {/* Display suggestions if available */}
-                {filteredProducts.length > 0 && (
+                {filteredProducts.length > 0 && !selectedProduct && (
                     <ul className="suggestions">
                         {filteredProducts.map((product) => (
                             <li
@@ -91,14 +86,22 @@ const Searchbar = () => {
                         ))}
                     </ul>
                 )}
+
                 {/* Show product details when a product is selected */}
                 {selectedProduct && (
-                    <div className="product-details">
-                        <h3>Selected Product Details:</h3>
-                        <Product
-                            item={selectedProduct}  // Pass the selected product as the item prop
-                            toggleDetails={toggleDetails}  // Pass toggleDetails function
-                        />
+                    <div className="product-details-container">
+                        <h3>Product Details:</h3>
+                        <div className="product-details">
+                            <div className="product-image">
+                                <img src={selectedProduct.image_link} alt={selectedProduct.product_name} />
+                            </div>
+                            <div className="product-info">
+                                <h4>{selectedProduct.product_name}</h4>
+                                <p><strong>Brand:</strong> {selectedProduct.brand_name}</p>
+                                <p><strong>Description:</strong> {selectedProduct.description}</p>
+                                <p><strong>Vendor:</strong> {selectedProduct.vendor_name}</p>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>
@@ -107,8 +110,6 @@ const Searchbar = () => {
 };
 
 export default Searchbar;
-
-
 
 
 
