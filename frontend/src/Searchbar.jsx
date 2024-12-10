@@ -14,7 +14,7 @@ const Searchbar = () => {
 
         if (query.trim() !== '') {
             try {
-                const response = await fetch('http://13.48.44.58:5000/api/products/search', {
+                const response = await fetch('https://13.48.44.58:5000/api/products/search', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
