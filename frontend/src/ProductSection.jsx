@@ -10,7 +10,7 @@ const ProductSection = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('https://13.48.44.58:5000/api/products'); // Replace with your API endpoint
+                const response = await fetch('http://13.48.44.58:5000/api/products'); // Replace with your API endpoint
                 const data = await response.json();
                 setProducts(data);
                 setLoading(false);
